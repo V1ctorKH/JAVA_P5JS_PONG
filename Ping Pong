@@ -1,0 +1,104 @@
+let Xb = 300;
+let Yb = 200;
+let D = 16;
+let Y2V ;
+let VXb = 6;
+let VYb = 6;
+
+let R = D / 2
+
+let XR = 10
+let YR = 90
+let Y1 = 160
+let Y2 = 160
+
+let POP = 0;
+let PM = 0;
+let missC = 0;
+let Cooldown = 30;
+
+
+function setup() {
+  createCanvas(600, 400);
+  stroke(80)
+}
+
+function draw() {
+  background(220);
+  fill(255)
+  circle(Xb,Yb,D);
+  Movimento();
+  recB();
+  Placar();
+  OP();
+  ponto();
+  Xb += VXb;
+  Yb += VYb;
+  Cooldown += 1;
+  if (Xb + R > width || Xb - R < 0 && Cooldown > 30) {
+    VXb *= -1
+    Cooldown = 0
+  }
+  if (Yb + R > height || Yb - R < 0 ) {
+    VYb *= -1
+  }
+  fill(255)
+  rect (10,Y1,XR,YR)
+  rect (580,Y2,XR,YR)
+  function Movimento(){
+    if (keyIsDown(87)){
+      Y1 -= 10
+    }
+    if (keyIsDown(83)){
+      Y1 += 10
+    }
+  }
+  function recB(){
+    if (Xb-R < 10+XR && Yb - R < Y1 + YR &&
+       Yb + R > Y1 && Cooldown > 30){
+      VXb *= -1
+      Cooldown = 0
+    }
+     if (Xb-R > 580-XR && Yb - R < Y2 + YR &&
+       Yb + R > Y2 && Cooldown > 30){
+      VXb *= -1
+       Cooldown = 0
+    }
+  }
+  function OP(){
+   Y2V = Yb - Y2 - 5 - 30
+   Y2 += Y2V + missC
+    miss()
+  }
+  function Placar(){
+    fill(150,150,150)
+    rect(130, 12, 40, 20);
+    rect(430, 12, 40, 20);
+    fill(255)
+    text(PM,150,30)
+    text(POP,450,30)
+    textAlign(CENTER);
+    textSize(20);
+  }
+  function ponto(){
+    if (Xb < 10){
+      POP += 1;
+    }
+    if (Xb > 590){
+      PM += 1;
+    }
+  }
+  function miss(){
+    if (POP >= PM){
+      missC += 1
+      if(missC >= 39){
+        missC = 40
+      }
+    }else {
+      missC -= 1
+      if (missC <= 35){
+        missC = 35
+      }
+    }
+  }
+}
